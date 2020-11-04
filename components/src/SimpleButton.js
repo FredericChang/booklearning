@@ -1,31 +1,45 @@
-import React , {Component} from "react";
-
+import React, { Component } from "react";
+import PropTypes from "prop-types"; 
 
 export class SimpleButton extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            counter: 0,
-            hasButtonBeenClicked: false
+  constructor(props) {
+    super(props);
+    this.state = {
+      // counter: 0,
+      hasButtonBeenClicked: false
+    };
+  }
+  render() {
+    return (
+      <button
+        onClick={this.handleClick}
+        className={this.props.className}
+        disabled={
+          this.props.disabled === "true" || this.props.disabled === true
         }
-    }
-
-    render (){
-        return (
-            <button onClick = { this.handleClick } 
-                    className={this.props.className}
-                    disabled={ this.props.disabled === "true" || this.props.disabled === true }>
-                {this.props.text}
-                {this.state.counter}
-                {this.state.hasButtonBeenClicked && <div> Button Cliked! </div>}
-            </button>
-        )
-    }
-    handleClick = () => {
-        this.setState({
-            counter: this.state.counter + 1,
-            hasButtonBeenClicked: this.state.counter > 0
-        });
-        this.props.callback();
-    }
+      >
+        {this.props.text}
+        {this.props.counter}
+        {this.state.hasButtonBeenClicked && <div> Button Cliked! </div>}
+      </button>
+    );
+  }
+  handleClick = () => {
+    this.props.incrementCallback(5);
+    this.setState({ hasButtonBeenClicked: true });
+    this.props.callback();
+  };
 }
+
+
+SimpleButton.defaultProps = { 
+  disabled: false
+} 
+
+
+SimpleButton.propTypes = { 
+  text: PropTypes.string,
+  theme: PropTypes.string,
+  callback: PropTypes.func,
+  disabled: PropTypes.oneOfType([PropTypes.bool, PropTypes.string ])
+} 
