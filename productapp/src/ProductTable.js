@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-
 import { ProductTableRow } from "./ProductTableRow";
-
 export class ProductTable extends Component {
     render() {
         return <table className="table table-sm table-striped table-bordered">
@@ -11,14 +9,14 @@ export class ProductTable extends Component {
                         className="bg-primary text-white text-cneter h4 p-2">
                             Products
                     </th>
+                    </tr>
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
                         <th>Category</th>
                         <th className="text-right"> Price </th>
-                        <th></th>
+                        <th>Button</th>
                     </tr>
-                </tr>
             </thead>
             <tbody>
                 {

@@ -1,48 +1,62 @@
 import React, { Component } from "react";
-import { ProductTable } from "./ProductTable"
-import { ProductEditor } from "./ProductEditor";
 
-export class ProductDisplay extends Component {
-
+export class ProductEditor  extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showEditor: false,
-            selectedProduct: null
+            formData: {
+                id: props.product.id || "",
+                name: props.product.name || "",
+                category: props.category || "",
+                price: props.product.price || "",
+            }
         }   
     }
-    startEditing = (product) => {
-        this.setState({ showEditor: true, selectedProduct: product })
-    }
-    createProduct = () => {
-        this.setState({ showEditor: true, selectedProduct: {} })
-    }
-    cancelEditing = () => {
-        this.setState({ showEditor: false, selectedProduct: null })
-    }
-    saveProduct = (product) => {
-        this.props.saveCallback(product);
-        this.setState({ showEditor: false, selectedProduct: null })
-    }
-    render() {
 
-        if (this.state.showEditor) {
-            return <ProductEditor   key={ this.state.selectedProduct.id || -1 }
-                                    product={ this.state.selectedProduct }
-                                    saveCallback={ this.saveProduct }
-                                    cancelCallback={ this.cancelEditing } />
-        } else {
+    handleChange = (ev) => {
+        ev.persist();
+        this.setState(state => state.formData[ev.target.name] =  ev.target.value);
+    }
+    handleClick = () => {
+        this.props.saveCallback(this.state.formData);
+    }
+
+    render() {
         return <div className="m-2">
-        <ProductTable   products={ this.props.products }
-                        editCallback={ this.startEditing }
-                        deleteCallback={ this.props.deleteCallback } />
-                <div className="text-center">
-                    <button className="btn btn-primary m-1"
-                        onClick={ this.createProduct }>
-                        Create Product
-                    </button>
-                </div>
+                    <div className="form-group">
+                        <label>ID</label>
+                        <input  className="form-control" name="id"
+                                disabled
+                                value={ this.state.formData.id }
+                                onChange={ this.handleChange } />
+                    </div>
+                    <div className="form-group">
+                        <label>Name</label>
+                        <input  className="form-control" name="name"
+                                value={ this.state.formData.name }
+                                onChange={ this.handleChange } />
+                    </div>
+                    <div className="form-group">
+                        <label>Category</label>
+                        <input  className="form-control" name="category"
+                                value={ this.state.formData.category }
+                                onChange={ this.handleChange } />
+                    </div>
+                    <div className="form-group">
+                        <label>Price</label>
+                        <input  className="form-control" name="price"
+                                value={ this.state.formData.price }
+                                onChange={ this.handleChange } />
+                        </div>
+                    <div className="text-center">
+                        <button className="btn btn-primary m-1" onClick={ this.handleClick }>
+                            Save
+                        </button>
+                        <button className="btn btn-secondary"
+                                onClick={ this.props.cancelCallback }>
+                            Cancel
+                        </button>
+                    </div>
         </div>
-        }
     }
 }
